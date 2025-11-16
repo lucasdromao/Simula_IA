@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -24,13 +25,13 @@ import {
 } from "lucide-react";
 
 export default function Home() {
+  const router = useRouter();
   const [aiTestsRemaining, setAiTestsRemaining] = useState(3);
   const [showPaywall, setShowPaywall] = useState(false);
 
   const handleAITest = () => {
     if (aiTestsRemaining > 0) {
-      setAiTestsRemaining(aiTestsRemaining - 1);
-      // Lógica do simulado com IA
+      router.push("/simulado/ia");
     } else {
       setShowPaywall(true);
     }
@@ -41,7 +42,7 @@ export default function Home() {
       {/* Header */}
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 cursor-pointer" onClick={() => router.push("/")}>
             <div className="bg-gradient-to-br from-purple-600 to-blue-600 p-2 rounded-xl">
               <Brain className="w-6 h-6 text-white" />
             </div>
@@ -55,7 +56,19 @@ export default function Home() {
               <Sparkles className="w-3 h-3" />
               {aiTestsRemaining} testes IA grátis
             </Badge>
-            <Button size="sm" className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
+            <Button 
+              variant="outline"
+              size="sm"
+              onClick={() => router.push("/ranking")}
+            >
+              <Trophy className="w-4 h-4 mr-2" />
+              Ranking
+            </Button>
+            <Button 
+              size="sm" 
+              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+              onClick={() => router.push("/planos")}
+            >
               <Crown className="w-4 h-4 mr-2" />
               Assinar Premium
             </Button>
@@ -81,11 +94,20 @@ export default function Home() {
           </p>
 
           <div className="flex flex-wrap gap-4 justify-center pt-4">
-            <Button size="lg" className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-lg px-8">
+            <Button 
+              size="lg" 
+              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-lg px-8"
+              onClick={() => router.push("/cursos")}
+            >
               <Zap className="w-5 h-5 mr-2" />
               Começar Agora
             </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8">
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="text-lg px-8"
+              onClick={() => router.push("/cursos")}
+            >
               <BookOpen className="w-5 h-5 mr-2" />
               Ver Cursos
             </Button>
@@ -195,30 +217,35 @@ export default function Home() {
               icon: GraduationCap,
               title: "Universitário",
               desc: "Simulados por curso e matéria",
-              color: "from-blue-500 to-cyan-500"
+              color: "from-blue-500 to-cyan-500",
+              route: "/cursos/universitario"
             },
             {
               icon: Target,
               title: "Vestibular",
               desc: "Prepare-se para entrar na universidade",
-              color: "from-purple-500 to-pink-500"
+              color: "from-purple-500 to-pink-500",
+              route: "/cursos/vestibular"
             },
             {
               icon: BookOpen,
               title: "ENEM",
               desc: "Questões estilo ENEM",
-              color: "from-orange-500 to-red-500"
+              color: "from-orange-500 to-red-500",
+              route: "/cursos/enem"
             },
             {
               icon: Trophy,
               title: "Matéria Específica",
               desc: "Foco total em uma disciplina",
-              color: "from-green-500 to-emerald-500"
+              color: "from-green-500 to-emerald-500",
+              route: "/cursos/materia-especifica"
             }
           ].map((category, i) => (
             <Card 
               key={i} 
               className="p-6 hover:shadow-xl transition-all cursor-pointer group"
+              onClick={() => router.push(category.route)}
             >
               <div className={`bg-gradient-to-br ${category.color} p-4 rounded-xl mb-4 group-hover:scale-110 transition-transform`}>
                 <category.icon className="w-8 h-8 text-white" />
@@ -346,6 +373,7 @@ export default function Home() {
               <Button 
                 size="lg" 
                 className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-lg"
+                onClick={() => router.push("/planos")}
               >
                 <Crown className="w-5 h-5 mr-2" />
                 Assinar Agora
@@ -440,6 +468,7 @@ export default function Home() {
             <Button 
               size="lg" 
               className="bg-white text-purple-600 hover:bg-purple-50 text-lg px-8"
+              onClick={() => router.push("/simulado/ia")}
             >
               <Sparkles className="w-5 h-5 mr-2" />
               Testar 3 Simulados Grátis
@@ -448,6 +477,7 @@ export default function Home() {
               size="lg" 
               variant="outline" 
               className="border-white text-white hover:bg-white/10 text-lg px-8"
+              onClick={() => router.push("/planos")}
             >
               Ver Planos
             </Button>
